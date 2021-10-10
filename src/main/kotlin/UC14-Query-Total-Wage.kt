@@ -4,9 +4,25 @@
 * adding code for multiple companies and save total wage
 * refactor code is done using list rather than array to store employee details
 * use interface approach
+* used ArrayList to store company details
+* displaying daily wages for company
+* query total wage by company name
 */
 
-class Employee : CompanyInterface {
+var map = hashMapOf<String, Int>()
+fun main() {
+    println("Welcome to Employee Wage Computation Program")
+    val employee = EmployeeWagesBuilder()
+    employee.addEmpCompany("Jio", 20, 20, 100);
+    employee.addEmpCompany("Dmart", 20, 10, 100);
+    employee.computeEmpWage()
+    employee.getTotalWageByCompany("Dmart")
+}
+
+/**
+ * EmployeeWagesBuilder implements CompanyInterface
+ */
+class EmployeeWagesBuilder : CompanyInterface {
     /**
      * method to add company details to list
      * @param companyName, wagePerHours, noOfWorkingDays, maxHourPerMonth
@@ -60,31 +76,22 @@ class Employee : CompanyInterface {
                 }
             }
             empWage = empHrs * company.empWagePerHour
+            dailyWagesList.add(empWage)
             totalWage += empWage
             totalEmployeeHours += empHrs
             println("Employee wage : $empWage")
         }
+        println("Daily wages of company is $dailyWagesList") //uc13 displaying daily wages
         printEmployeeWage(company, totalWage)
+        map.put(company.companyName, totalWage)
     }
 
+    /** uc14
+     * method to  query total wage by company name
+     * @param companyName
+     */
+    fun getTotalWageByCompany(companyName: String) {
+        println("The total wage of $companyName is ${map.get(companyName)}")
+    }
 }
 
-fun main() {
-    println("Welcome to Employee Wage Computation Program")
-    var employee = Employee()
-    employee.addEmpCompany("Jio", 20, 20, 100);
-    employee.addEmpCompany("Dmart", 20, 10, 100);
-    employee.computeEmpWage()
-
-}
-
-/**
- * method to print total wage of employee
- * @param company ,totalWage
- */
-fun printEmployeeWage(company: Company, totalWage: Int) {
-    println("Company name : ${company.companyName}")
-    totalWageList.add(totalWage)
-    println("Total employee wage for a month $totalWage")
-    println(totalWageList)
-}
